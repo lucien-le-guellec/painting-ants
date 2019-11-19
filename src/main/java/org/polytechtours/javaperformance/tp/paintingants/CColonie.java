@@ -18,30 +18,27 @@ public class CColonie implements Runnable {
   private PaintingAnts mApplis;
 
   /** Creates a new instance of CColonie */
-  public CColonie(Vector<CFourmi> pColonie, PaintingAnts pApplis) {
+  CColonie(Vector<CFourmi> pColonie, PaintingAnts pApplis) {
     mColonie = pColonie;
     mApplis = pApplis;
   }
 
-  public void pleaseStop() {
+  void pleaseStop() {
     mContinue = false;
   }
 
   @Override
   public void run() {
 
-    while (mContinue == true) {
+    while (mContinue) {
       if (!mApplis.getPause()) {
-        for (int i = 0; i < mColonie.size(); i++) {
-          mColonie.get(i).deplacer();
+        for (CFourmi cFourmi : mColonie) {
+          cFourmi.deplacer();
           mApplis.compteur();
         }
-      } else {
-        /*
-         * try { Thread.sleep(100); } catch (InterruptedException e) { break; }
-         */
-
-      }
+      }  /*
+       * try { Thread.sleep(100); } catch (InterruptedException e) { break; }
+       */
     }
   }
 

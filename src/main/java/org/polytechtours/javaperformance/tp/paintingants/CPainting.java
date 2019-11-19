@@ -41,7 +41,7 @@ public class CPainting extends Canvas implements MouseListener {
   private Graphics mGraphics;
   // Objet ne servant que pour les bloc synchronized pour la manipulation du
   // tableau des couleurs
-  private Object mMutexCouleurs = new Object();
+  private final Object mMutexCouleurs = new Object();
   // tableau des couleurs, il permert de conserver en memoire l'état de chaque
   // pixel du canvas, ce qui est necessaire au deplacemet des fourmi
   // il sert aussi pour la fonction paint du Canvas
@@ -49,7 +49,7 @@ public class CPainting extends Canvas implements MouseListener {
   // couleur du fond
   private Color mCouleurFond = new Color(255, 255, 255);
   // dimensions
-  private Dimension mDimension = new Dimension();
+  private Dimension mDimension;
 
   private PaintingAnts mApplis;
 
@@ -58,7 +58,7 @@ public class CPainting extends Canvas implements MouseListener {
   /******************************************************************************
    * Titre : public CPainting() Description : Constructeur de la classe
    ******************************************************************************/
-  public CPainting(Dimension pDimension, PaintingAnts pApplis) {
+  CPainting(Dimension pDimension, PaintingAnts pApplis) {
     int i, j;
     addMouseListener(this);
 
@@ -85,25 +85,18 @@ public class CPainting extends Canvas implements MouseListener {
    * Titre : Color getCouleur Description : Cette fonction renvoie la couleur
    * d'une case
    ******************************************************************************/
-  public Color getCouleur(int x, int y) {
+  Color getCouleur(int x, int y) {
     synchronized (mMutexCouleurs) {
       return mCouleurs[x][y];
     }
   }
 
-  /******************************************************************************
-   * Titre : Color getDimension Description : Cette fonction renvoie la
-   * dimension de la peinture
-   ******************************************************************************/
-  public Dimension getDimension() {
-    return mDimension;
-  }
 
   /******************************************************************************
    * Titre : Color getHauteur Description : Cette fonction renvoie la hauteur de
    * la peinture
    ******************************************************************************/
-  public int getHauteur() {
+  int getHauteur() {
     return mDimension.height;
   }
 
@@ -111,7 +104,7 @@ public class CPainting extends Canvas implements MouseListener {
    * Titre : Color getLargeur Description : Cette fonction renvoie la hauteur de
    * la peinture
    ******************************************************************************/
-  public int getLargeur() {
+  int getLargeur() {
     return mDimension.width;
   }
 
@@ -119,7 +112,7 @@ public class CPainting extends Canvas implements MouseListener {
    * Titre : void init() Description : Initialise le fond a la couleur blanche
    * et initialise le tableau des couleurs avec la couleur blanche
    ******************************************************************************/
-  public void init() {
+  void init() {
     int i, j;
     mGraphics = getGraphics();
     synchronized (mMutexCouleurs) {
@@ -308,7 +301,7 @@ public class CPainting extends Canvas implements MouseListener {
    * fonction va colorer le pixel correspondant et mettre a jour le tabmleau des
    * couleurs
    ******************************************************************************/
-  public void setCouleur(int x, int y, Color c, int pTaille) {
+  void setCouleur(int x, int y, Color c, int pTaille) {
     int i, j, k, l, m, n;
     float R, G, B;
     Color lColor;
@@ -419,7 +412,7 @@ public class CPainting extends Canvas implements MouseListener {
    * Titre : setSupendu Description : Cette fonction change l'état de suspension
    ******************************************************************************/
 
-  public void suspendre() {
+  private void suspendre() {
     mSuspendu = !mSuspendu;
     if (!mSuspendu) {
       repaint();
